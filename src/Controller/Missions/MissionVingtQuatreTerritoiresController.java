@@ -1,0 +1,40 @@
+package Controller.Missions;
+
+import Controller.JoueurController;
+import Controller.MissionController;
+import Model.Missions.MissionVingtQuatreTerritoiresModel;
+import View.MissionView;
+
+public class MissionVingtQuatreTerritoiresController extends MissionController{
+
+	public MissionVingtQuatreTerritoiresController(JoueurController player) {
+		super(new MissionVingtQuatreTerritoiresModel(player), new MissionView());
+	}
+
+	@Override
+	public JoueurController get_player() {
+		return this.model.get_player();
+	}
+
+	@Override
+	public String get_mission_contenu() {
+		return this.model.get_mission_contenu();
+	}
+
+	@Override
+	public boolean get_condition_de_complete() {
+		return this.model.get_condition_de_complete();
+	}
+
+	@Override
+	public void set_mission_contenu(String mission_contenu) {
+		this.model.set_mission_contenu(mission_contenu);
+	}
+
+	@Override
+	public void updateView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+}
