@@ -5,7 +5,7 @@ import java.util.ArrayList;
 
 import Controller.JoueurController;
 import Controller.MapController;
-import View.RiskView;
+import View.TourView;
 import javafx.stage.Stage;
 
 public class Risk {
@@ -15,13 +15,12 @@ public class Risk {
 	private ArrayList<JoueurController> players_vivant;
 	private MapController map;
 	private Stage stage;
-	private RiskView view;
+	private TourView view;
 	private JoueurController player_actuelle;
 
 	public Risk(int nb_player, int nb_AI, int nb_terre, Stage stage) throws FileNotFoundException {
 		
 		this.stage = stage;
-		this.view = new RiskView(stage);
 		// Affiche
 		this.nombre_player = nb_player;
 		this.nombre_IA = nb_AI;
@@ -59,8 +58,6 @@ public class Risk {
 		stage.close();
 		
 		// this.view.get_scene();
-		this.stage.setScene(this.view.get_scene());
-		stage.show();
 		
 		/*
 		 * JEU COMMENCE ICI
@@ -76,12 +73,15 @@ public class Risk {
 		
 	}
 
-	public void main_jeu() {
+	public void main_jeu() throws FileNotFoundException {
 		boolean fin = false;
 		this.player_actuelle = this.players_vivant.get(nombre_player - 1);
 		this.player_actuelle = this.tour_de_qui(this.player_actuelle);
+		this.view = new TourView(stage, this.player_actuelle, this);
+		this.stage.setScene(this.view.get_scene());
+		stage.show();
 		this.view.get_player_tour_info(this.player_actuelle).showAndWait();
-		this.view.set_pop_joueur(player_actuelle);
+		this.view.get_player_mission_info(this.player_actuelle).showAndWait();
 		
 		/*while (!fin) {
 			/*

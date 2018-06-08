@@ -37,7 +37,7 @@ public class BattailleView extends View{
 	public void show_stage_battaille(String name, UniteController [][] combat_list, JoueurController attack_player, JoueurController defence_player, JoueurController victoire_player) throws FileNotFoundException {
 		Stage stage = new Stage();
 		stage.setWidth(900);
-		stage.setHeight(600);
+		stage.setHeight(900);
 		GridPane root = new GridPane();
 		root.setVgap(10);
 		root.setHgap(10);
@@ -61,25 +61,26 @@ public class BattailleView extends View{
 			vbox.getChildren().addAll(status, score);
 			hbox.getChildren().add(vs);
 			hbox.getChildren().add(vbox);
-			root.add(hbox, i+2, 1);
+			root.add(hbox, 1, i+2);
 		}
 		if (combat_list[0].length == 3) {
 			hbox = new HBox();
 			VBox vbox = combat_list[0][2].get_unite_vbox();
-			status = (combat_list[0][3].get_status()) ? new Label("V") : new Label("X");
-			Label score = new Label(combat_list[1][3].get_score() + "");
+			status = (combat_list[0][2].get_status()) ? new Label("V") : new Label("X");
+			Label score = new Label(combat_list[0][2].get_score() + "");
 			vbox.getChildren().addAll(status, score);
 			hbox.getChildren().addAll(vbox, new Label(), new Label());
-			root.add(hbox, 4, 1);
+			root.add(hbox, 1, 4);
 		}
 		hbox = new HBox();
 		hbox.getChildren().add(new Label());
 		Label victoire = new Label("Victoire: "+victoire_player.get_name());
 		hbox.getChildren().add(victoire);
 		hbox.getChildren().add(new Label());
-		root.add(hbox, 5, 1);
+		root.add(hbox, 1, 6);
 		
 		Scene scene = new Scene(root, stage.getWidth(), stage.getHeight());
+		stage.setScene(scene);
 		stage.setTitle(name);
 		stage.show();
 	}

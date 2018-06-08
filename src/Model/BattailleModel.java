@@ -81,7 +81,7 @@ public class BattailleModel extends Model{
 	}
 	
 	private UniteController [] selectionner_defence_unite() {
-		UniteController [] defence_list = new UniteController [2];
+		UniteController [] res_defence_list = new UniteController [2];
 		boolean condition = false;
 		int priorite_def = 0, index = 0;
 		while (condition == false) {
@@ -89,7 +89,7 @@ public class BattailleModel extends Model{
 			for (int i=0; i<this.defence_unite.size(); i++) {
 				if (this.defence_unite.get(i).get_priorite_def() == priorite_def) {
 					if (index < 2) {
-						defence_list[index] = this.defence_unite.get(i);
+						res_defence_list[index] = this.defence_unite.get(i);
 						index++;
 					}
 				}
@@ -100,7 +100,7 @@ public class BattailleModel extends Model{
 			condition = (index > 1) ? true : false;
 			condition = (this.defence_unite.size() < 2) ? true : false;
 		}
-		return defence_list;
+		return res_defence_list;
 	}
 	
 	private UniteController [][] generer_combat_list() {

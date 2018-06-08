@@ -7,6 +7,7 @@ import java.util.Random;
 import Controller.BattailleController;
 import Controller.JoueurController;
 import Controller.MapController;
+import Controller.RegionController;
 import Controller.TerritoireController;
 import Controller.BoutonEvent.BoutonGameBeginEvent;
 import Controller.Unites.CanonController;
@@ -34,40 +35,15 @@ public class InitCore extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
+		
+		this.main_jeu(stage);
+		
+		// this.test_bataille();
+	}
+
+	private void main_jeu(Stage stage) throws FileNotFoundException {
 		this.set_stage(stage);
 		this.set_load_view(stage);
-		
-		/*SoldatController soldat = new SoldatController();
-		
-		CavalierController cavalier = new CavalierController();
-		
-		CanonController canon = new CanonController();
-		
-		JoueurController player1 = new JoueurController("Tianyang", false);
-		player1.add_armee(canon);
-		player1.add_armee(cavalier);
-		player1.add_armee(soldat);
-		JoueurController player2 = new JoueurController("Wenxiao", false);
-		soldat = new SoldatController();
-		cavalier = new CavalierController();
-		canon = new CanonController();
-		player1.add_armee(canon);
-		player1.add_armee(cavalier);
-		player1.add_armee(soldat);
-		
-		MapController map = new MapController();
-		for (int i=0; i<map.get_territoires().length; i++) {
-			if (rand.nextInt(2) == 0) {
-				map.get_territoires()[i].set_occupant(player1);
-			} else {
-				map.get_territoires()[i].set_occupant(player2);
-			}
-		}
-		
-		TerritoireController territoire = map.get_territoire_by_name("la France");
-		TerritoireController territoire_venir = map.get_territoire_by_name("l'Italie");
-		
-		BattailleController battaille = new BattailleController(territoire, territoire_venir, player2, player1, player2.get_armees(), player1.get_armees());*/
 	}
 
 	private void set_stage(Stage stage) throws FileNotFoundException {
@@ -118,6 +94,38 @@ public class InitCore extends Application{
 		stage.show();
 	}
 	
+	public void test_bataille() throws FileNotFoundException {
+		JoueurController player1 = new JoueurController("Wenxiao", false);
+		JoueurController player2 = new JoueurController("Tianyang", false);
+		
+		MapController map = new MapController();
+		for (int i=0; i<map.get_territoires().length; i++) {
+			if (rand.nextInt(2) == 0) {
+				map.get_territoires()[i].set_occupant(player1);
+			} else {
+				map.get_territoires()[i].set_occupant(player2);
+			}
+		}
+		
+		TerritoireController territoire = map.get_territoire_by_name("la France");
+		TerritoireController territoire_venir = map.get_territoire_by_name("l'Italie");
+		
+		SoldatController soldat = new SoldatController();
+		CavalierController cavalier = new CavalierController();
+		CanonController canon = new CanonController();
+		player1.add_armee(canon);
+		player1.add_armee(cavalier);
+		player1.add_armee(soldat);
+		soldat = new SoldatController();
+		cavalier = new CavalierController();
+		canon = new CanonController();
+		player2.add_armee(canon);
+		player2.add_armee(cavalier);
+		
+		BattailleController battle = new BattailleController(player1.get_territoire().get(0), player2.get_territoire().get(0), player1, player2, player1.get_armees(), player2.get_armees());
+		battle.updateView();
+		battle.show_stage_bataille();
+	}
 	
 	
 }

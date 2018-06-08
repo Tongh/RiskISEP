@@ -4,6 +4,8 @@ import Controller.JoueurController;
 import Controller.MissionController;
 import Model.Missions.MissionDetruireXModel;
 import View.MissionView;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 
 public class MissionDetruireXController extends MissionController{
 
@@ -38,7 +40,14 @@ public class MissionDetruireXController extends MissionController{
 	@Override
 	public void updateView() {
 		// TODO Auto-generated method stub
-		
+	}
+	
+	public Alert get_process_alert() {
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Process de votre mission");
+		alert.setHeaderText("Votre mission est: " + this.get_mission_contenu());
+		alert.setContentText("");
+		return alert;
 	}
 
 }
