@@ -11,6 +11,7 @@ public class MissionDetruireXController extends MissionController{
 
 	public MissionDetruireXController(JoueurController player, JoueurController[] players) {
 		super(new MissionDetruireXModel(player, players), new MissionView());
+		this.set_mission_short_name("Mission détuire");
 	}
 
 	public JoueurController get_target_player() {

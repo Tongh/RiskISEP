@@ -13,6 +13,10 @@ public abstract class MissionModel extends Model {
 		this.player = player;
 	}
 	
+	public void set_mission_short_name(String name) {
+		this.mission_simple_name = name;
+	}
+	
 	public JoueurController get_player() {
 		return this.player;
 	}
@@ -27,6 +31,10 @@ public abstract class MissionModel extends Model {
 	
 	public String get_mission_contenu() {
 		return this.mission_contenu;
+	}
+	
+	public String get_mission_short_name() {
+		return this.mission_simple_name;
 	}
 
 	public abstract boolean get_condition_de_complete();

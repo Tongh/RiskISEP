@@ -49,6 +49,10 @@ public class MapModel extends Model {
 		return (this.deux_territoires_adj_by_id(this.get_territoire_by_name(name1).get_id(), this.get_territoire_by_name(name2).get_id()));
 	}
 	
+	public boolean deux_territoires_adj(TerritoireController terre1, TerritoireController terre2) {
+		return (this.deux_territoires_adj_by_id(terre1.get_id(), terre2.get_id()));
+	}
+	
 	public int [][] get_adj_territoires_matrix() {
 		return this.adj_territoires_matrix;
 	}

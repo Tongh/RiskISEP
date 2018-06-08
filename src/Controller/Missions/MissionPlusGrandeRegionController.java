@@ -9,6 +9,7 @@ public class MissionPlusGrandeRegionController extends MissionController{
 
 	public MissionPlusGrandeRegionController(JoueurController player) {
 		super(new MissionPlusGrandeRegionModel(player), new MissionView());
+		this.set_mission_short_name("Mission contrôler");
 	}
 
 	@Override

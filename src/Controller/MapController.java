@@ -19,6 +19,10 @@ public class MapController extends Controller<MapModel, MapView> {
 		return this.model.get_territoires();
 	}
 	
+	public boolean deux_territoires_adj(TerritoireController terre1, TerritoireController terre2) {
+		return this.model.deux_territoires_adj(terre1, terre2);
+	}
+	
 	public TerritoireController get_territoire_by_name(String name) {
 		return this.model.get_territoire_by_name(name);
 	}

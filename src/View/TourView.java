@@ -2,13 +2,17 @@ package View;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.util.HashMap;
+import java.util.Map;
 
 import Controller.JoueurController;
 import Controller.BoutonEvent.BoutonChangePlayerName;
+import Controller.BoutonEvent.BoutonDetailMission;
 import Controller.BoutonEvent.BoutonDetailTerritoire;
 import Controller.BoutonEvent.BoutonFinDeTour;
 import Controller.BoutonEvent.BoutonGetRenfort;
 import Controller.BoutonEvent.BoutonShadowEvent;
+import Controller.BoutonEvent.BoutonUpdateTerritoirePop;
 import Core.Risk;
 import Core.View;
 import javafx.geometry.Insets;
@@ -35,7 +39,7 @@ public class TourView extends View{
 	private GridPane root;
 	private Scene scene;
 	private ImageView map;
-	private VBox pop;
+	private GridPane pop;
 	private HBox bar;
 	private String map_path = "./src/View/Images/map.png";
 	private Button fin_tour = new Button("Fin");
@@ -43,11 +47,16 @@ public class TourView extends View{
 	private Button detail = new Button("Détail"); 
 	private Button mov = new Button("Mouvement");
 	private Button change_name = new Button("Modifier");
-	private Button process_mission = new Button("Process");
+	private Button process_mission = new Button("Mission");
 	private Button update_terre_detail = new Button("Update");
 	private JoueurController player;
 	private Label label_player_name;
-	private Risk risk; 
+	private Risk risk;
+	private Label renfort_label;
+	private Label renfort_reste_label;
+	private Label mission_label;
+	private Label mission_contenu;
+	private Label territoire_label; 
 
 	public TourView(Stage stage, JoueurController player, Risk risk) throws FileNotFoundException {
 		super(stage.getWidth(), stage.getHeight());
@@ -60,21 +69,38 @@ public class TourView extends View{
 	
 	public void updateView() throws FileNotFoundException {
 		this.root = new GridPane();
-		root.setPadding(new Insets(50, 50, 50, 50));
+		root.setPadding(new Insets(20, 20, 20, 20));
 		root.setHgap(10);
 		root.setVgap(10);
 		
-		this.map = this.get_map();
-		this.bar = this.get_bar();
-		this.pop = this.get_pop_joueur();
+		this.set_map();
+		this.set_bar();
+		this.set_pop();
 		
-		root.add(map, 1, 1);
-		root.add(bar, 1, 2);
-		root.add(pop, 2, 1);
 		
 		this.setup_button();
 		
 		this.scene = new Scene(root, stage.getWidth(), stage.getHeight(), Color.LIGHTGRAY);
+	}
+
+	private void set_pop() {
+		this.pop = this.get_pop_joueur();
+		root.add(pop, 2, 1);
+	}
+	
+	public void update_pop() {
+		this.set_pop();
+		this.scene = new Scene(root, stage.getWidth(), stage.getHeight(), Color.LIGHTGRAY);
+	}
+
+	private void set_bar() {
+		this.bar = this.get_bar();
+		root.add(bar, 1, 2);
+	}
+
+	private void set_map() throws FileNotFoundException {
+		this.map = this.get_map();
+		root.add(map, 1, 1);
 	}
 
 	private void setup_button() {
@@ -93,12 +119,17 @@ public class TourView extends View{
 		renfort.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(renfort, new DropShadow(), true));
 		renfort.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(renfort, false));
 
-		detail.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonDetailTerritoire(this, risk));
+		detail.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonDetailTerritoire(risk));
 		detail.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(detail, new DropShadow(), true));
 		detail.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(detail, false));
 
+		process_mission.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonDetailMission(risk));
 		process_mission.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(process_mission, new DropShadow(), true));
 		process_mission.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(process_mission, false));
+		
+		update_terre_detail.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonUpdateTerritoirePop(this, risk));
+		update_terre_detail.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(update_terre_detail, new DropShadow(), true));
+		update_terre_detail.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(update_terre_detail, false));
 		
 	}
 
@@ -141,61 +172,50 @@ public class TourView extends View{
 		return alert;
 	}
 
-	public VBox get_pop_joueur() {
-		VBox vbox = new VBox();
-		Label vide = new Label();
-		vbox.setSpacing(10);
-		vbox.setPadding(new Insets(10,10,10,10));
+	public GridPane get_pop_joueur() {
+		GridPane pop_pane = new GridPane();
+		pop_pane.setPadding(new Insets(10,10,10,10));
+		pop_pane.setHgap(10);
 		
-		HBox hbox = new HBox();
-		hbox.setSpacing(10);
-		hbox.setPadding(new Insets(5, 5, 5, 5));
-		Label name = new Label("PLAYER NAME :");
 		this.label_player_name = new Label(player.get_name());
-		hbox.getChildren().addAll(name, label_player_name, change_name);
-		vbox.getChildren().add(hbox);
+		pop_pane.add(label_player_name, 1, 0);
+		pop_pane.add(change_name, 3, 0);
 		
-		hbox = new HBox();
-		hbox.setSpacing(10);
-		hbox.setPadding(new Insets(5, 5, 5, 5));
-		name = new Label("Renfort :");
-		Label renfort_reste = new Label(player.get_renfort()+"");
-		hbox.getChildren().addAll(name, renfort_reste, vide);
-		vbox.getChildren().add(hbox);
+		renfort_label= new Label("Renfort :");
+		renfort_reste_label = new Label(player.get_renfort()+"");
+		pop_pane.add(renfort_label, 0, 1);
+		pop_pane.add(renfort_reste_label, 1, 1);
 		
-		hbox = new HBox();
-		hbox.setSpacing(10);
-		hbox.setPadding(new Insets(5, 5, 5, 5));
-		name = new Label("Mission :");
-		Label mission = new Label(player.get_mission().get_mission_contenu());
-		hbox.getChildren().addAll(name, mission, process_mission);
-		vbox.getChildren().add(hbox);
+		mission_label = new Label("Mission :");
+		mission_contenu = new Label(player.get_mission().get_mission_short_name());
+		pop_pane.add(mission_label, 0, 2);
+		pop_pane.add(mission_contenu, 1, 2, 2, 1);
+		pop_pane.add(process_mission, 3, 2);
 		
-		hbox = new HBox();
-		hbox.setSpacing(10);
-		hbox.setPadding(new Insets(5, 5, 5, 5));
-		name = new Label("Territoires");
-		hbox.getChildren().addAll(name, vide, update_terre_detail);
-		vbox.getChildren().add(hbox);
+		territoire_label = new Label("Territoires");
+		pop_pane.add(territoire_label, 0, 3, 3, 1);
+		pop_pane.add(update_terre_detail, 3, 3);
 		
-		VBox vbox_territoire = new VBox();
-		vbox_territoire.setSpacing(5);
-		vbox_territoire.setPadding(new Insets(5,5,5,5));
-		for (int i=0; i<player.get_territoire().size(); i++) {
-			hbox = new HBox();
-			hbox.setSpacing(10);
-			hbox.setPadding(new Insets(5, 5, 5, 5));
-			name = new Label(player.get_territoire().get(i).get_name());
-			Label renfort = new Label(player.get_territoire().get(i).get_armee_renfort()+"");
-			hbox.getChildren().addAll(name, renfort, vide);
-			vbox.getChildren().add(hbox);
+		HashMap<String, Integer> terres_data = this.player.get_map_terrtoire();
+		
+		int i = 4;
+		for (Map.Entry<String, Integer> entry: terres_data.entrySet()) {
+			Label territoire_name = new Label(entry.getKey());
+			Label renfort = new Label(entry.getValue()+"");
+			pop_pane.add(territoire_name, 0, i, 2, 1);
+			pop_pane.add(renfort, 3, i);
+			i++;
 		}
 		
-		return vbox;
+		return pop_pane;
 	}
 	
 	public void update_player_name() {
 		this.label_player_name.setText(player.get_name());
+	}
+	
+	public Stage get_stage() {
+		return this.stage;
 	}
 
 }

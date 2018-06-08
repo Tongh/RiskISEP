@@ -1,6 +1,7 @@
 package Controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Core.Controller;
 import Model.JoueurModel;
@@ -38,6 +39,10 @@ public class JoueurController extends Controller<JoueurModel, JoueurView>{
 	
 	public int get_renfort() {
 		return this.model.get_renfort();
+	}
+	
+	public HashMap<String, Integer> get_map_terrtoire() {
+		return this.model.get_map_territoire();
 	}
 	
 	public void add_renfort(int benefice) {

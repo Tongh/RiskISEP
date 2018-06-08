@@ -9,7 +9,7 @@ public class MissionTousTerritoiresController extends MissionController{
 
 	public MissionTousTerritoiresController(JoueurController player) {
 		super(new MissionTousTerritoiresModel(player), new MissionView());
-		// TODO Auto-generated constructor stub
+		this.set_mission_short_name("Mission contrôler");
 	}
 
 	@Override

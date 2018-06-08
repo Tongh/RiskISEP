@@ -1,6 +1,7 @@
 package Model;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 import Controller.MissionController;
@@ -58,6 +59,14 @@ public class JoueurModel extends Model{
 	
 	public int get_captif_marque() {
 		return this.captif_marque;
+	}
+	
+	public HashMap<String, Integer> get_map_territoire() {
+		HashMap<String, Integer> result = new HashMap<String, Integer>();
+		for (int i=0; i<this.get_territoires().size(); i++) {
+			result.put(this.get_territoires().get(i).get_name(), this.get_territoires().get(i).get_armee_renfort());
+		}
+		return result;
 	}
 	
 	public void cal_renfort() {

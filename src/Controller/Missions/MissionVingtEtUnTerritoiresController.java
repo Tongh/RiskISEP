@@ -9,7 +9,7 @@ public class MissionVingtEtUnTerritoiresController extends MissionController{
 
 	public MissionVingtEtUnTerritoiresController(JoueurController player) {
 		super(new MissionVingtEtUnTerritoiresModel(player), new MissionView());
-		// TODO Auto-generated constructor stub
+		this.set_mission_short_name("Mission contrôler");
 	}
 
 	@Override

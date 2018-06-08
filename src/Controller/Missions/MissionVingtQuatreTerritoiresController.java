@@ -9,6 +9,7 @@ public class MissionVingtQuatreTerritoiresController extends MissionController{
 
 	public MissionVingtQuatreTerritoiresController(JoueurController player) {
 		super(new MissionVingtQuatreTerritoiresModel(player), new MissionView());
+		this.set_mission_short_name("Mission contrôler");
 	}
 
 	@Override

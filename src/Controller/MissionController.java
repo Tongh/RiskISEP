@@ -9,6 +9,14 @@ public abstract class MissionController extends Controller<MissionModel, Mission
 	public MissionController(MissionModel model, MissionView view) {
 		super(model, view);
 	}
+	
+	public String get_mission_short_name() {
+		return this.model.get_mission_short_name();
+	}
+	
+	public void set_mission_short_name(String name) {
+		this.model.set_mission_short_name(name);
+	}
 
 	public abstract JoueurController get_player();
 	

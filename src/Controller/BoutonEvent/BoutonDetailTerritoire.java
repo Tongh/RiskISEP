@@ -7,22 +7,17 @@ import java.util.Optional;
 import Controller.RegionController;
 import Controller.TerritoireController;
 import Core.Risk;
-import View.TourView;
 import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ButtonBar.ButtonData;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.input.MouseEvent;
 
 public class BoutonDetailTerritoire implements EventHandler<MouseEvent> {
 
-	private TourView tourView;
 	private Risk risk;
 	
-	public BoutonDetailTerritoire(TourView tourView, Risk risk) {
-		this.tourView = tourView;
+	public BoutonDetailTerritoire(Risk risk) {
 		this.risk = risk;
 	}
 	@Override
@@ -67,11 +62,33 @@ public class BoutonDetailTerritoire implements EventHandler<MouseEvent> {
 		if (result.isPresent()){
 			for (int i=0; i<terres.size(); i++) {
 				if (result.get() == terres.get(i).get_name()) {
-					this.show_territoire_detail(terres.get(i));
+					if (this.can_we_show_info(terres.get(i))) {
+						this.show_territoire_detail(terres.get(i));
+					} else {
+						this.champs_visuel_warning(terres.get(i));
+					}
 				}
 			}
 		}
 	}
+
+	private void champs_visuel_warning(TerritoireController terre) {
+		Alert alert = new Alert(AlertType.WARNING);
+		alert.setTitle("Warning!");
+		alert.setHeaderText("Ce territoire [" + terre.get_name() + "] n'est pas dans votre champs visuel!");
+		alert.setContentText("Si vous voulez savoir les détail sur ce territoire, vous dévez s'occuper un des territoires à proximité de [" + terre.get_name() + "]!");
+
+		alert.showAndWait();
+	}
+	
+	private boolean can_we_show_info(TerritoireController terre) {
+		for (int i=0; i<risk.get_player_actuelle().get_territoire().size(); i++) {
+			if (risk.get_map().deux_territoires_adj(risk.get_player_actuelle().get_territoire().get(i), terre)) {
+				return true;
+			}
+		} return false;
+	}
+	
 	private void show_territoire_detail(TerritoireController terre) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Information sur " + terre.get_name());
