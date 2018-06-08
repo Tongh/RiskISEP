@@ -1,6 +1,7 @@
 package Controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import Core.Controller;
 import Model.TerritoireModel;
@@ -38,6 +39,14 @@ public class TerritoireController extends Controller<TerritoireModel, Territoire
 	
 	public boolean occupant_region_have_change() {
 		return this.region_occupant_status;
+	}
+	
+	public HashMap<String, Integer> get_map_armee() {
+		return this.model.get_map_armee();
+	}
+	
+	public int get_armee_renfort() {
+		return this.model.get_armee_renfort();
 	}
 	
 	public boolean have_occupant() {

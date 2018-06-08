@@ -9,7 +9,7 @@ import View.RegionView;
 public class RegionController extends Controller<RegionModel, RegionView> {
 	
 	public RegionController(String name) {
-		super(new RegionModel(), new RegionView());
+		super(new RegionModel(name), new RegionView());
 	}
 	
 	public String get_occupant_name() {

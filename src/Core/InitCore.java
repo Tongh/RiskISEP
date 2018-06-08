@@ -35,10 +35,9 @@ public class InitCore extends Application{
 
 	@Override
 	public void start(Stage stage) throws Exception {
-		
+
+		//this.test_bataille();
 		this.main_jeu(stage);
-		
-		// this.test_bataille();
 	}
 
 	private void main_jeu(Stage stage) throws FileNotFoundException {

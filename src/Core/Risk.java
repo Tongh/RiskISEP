@@ -74,20 +74,15 @@ public class Risk {
 	}
 
 	public void main_jeu() throws FileNotFoundException {
-		boolean fin = false;
 		this.player_actuelle = this.players_vivant.get(nombre_player - 1);
-		this.player_actuelle = this.tour_de_qui(this.player_actuelle);
-		this.view = new TourView(stage, this.player_actuelle, this);
-		this.stage.setScene(this.view.get_scene());
-		stage.show();
-		this.view.get_player_tour_info(this.player_actuelle).showAndWait();
-		this.view.get_player_mission_info(this.player_actuelle).showAndWait();
+		this.un_tour();
 		
 		/*while (!fin) {
 			/*
 			 * MAIN BODY
 			 
 			// changer le valeur de player_acuttuel
+			boolean fin = false;
 			this.player_actuelle = this.tour_de_qui(this.player_actuelle);
 			this.view.get_player_tour_info(this.player_actuelle).showAndWait();
 			this.view.set_pop_joueur(player_actuelle);
@@ -130,7 +125,7 @@ public class Risk {
 		
 	}
 
-	private JoueurController tour_de_qui(JoueurController player_actuelle) {
+	public JoueurController tour_de_qui(JoueurController player_actuelle) {
 		int index = 0;
 		for (int i=0; i<this.players_vivant.size(); i++) {
 			if (this.players_vivant.get(i).equals(player_actuelle)) {
@@ -142,6 +137,10 @@ public class Risk {
 			}
 		}
 		return this.players_vivant.get(index);
+	}
+	
+	public void set_player_actuelle(JoueurController player) {
+		this.player_actuelle = player;
 	}
 
 	private JoueurController quelqu_un_est_win() {
@@ -155,5 +154,30 @@ public class Risk {
 	
 	public JoueurController get_player_actuelle() {
 		return this.player_actuelle;
+	}
+	
+	public JoueurController [] get_players() {
+		return this.players;
+	}
+	
+	public TourView get_view() {
+		return this.view;
+	}
+	
+	public void set_view(TourView view) {
+		this.view = view;
+	}
+	
+	public void un_tour() throws FileNotFoundException {
+		this.player_actuelle = this.tour_de_qui(this.player_actuelle);
+		this.view = new TourView(stage, this.player_actuelle, this);
+		this.stage.setScene(this.view.get_scene());
+		stage.show();
+		this.view.get_player_tour_info(this.player_actuelle).showAndWait();
+		this.view.get_player_mission_info(this.player_actuelle).showAndWait();
+	}
+	
+	public MapController get_map() {
+		return this.map;
 	}
 }

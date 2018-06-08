@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 
 import Controller.JoueurController;
 import Controller.BoutonEvent.BoutonChangePlayerName;
+import Controller.BoutonEvent.BoutonDetailTerritoire;
+import Controller.BoutonEvent.BoutonFinDeTour;
 import Controller.BoutonEvent.BoutonShadowEvent;
 import Core.Risk;
 import Core.View;
@@ -13,6 +15,7 @@ import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -72,25 +75,25 @@ public class TourView extends View{
 	}
 
 	private void setup_button() {
-		change_name.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonChangePlayerName(player, this));
-		change_name.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(change_name, true));
+		change_name.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonChangePlayerName(player, this, risk));
+		change_name.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(change_name, new DropShadow(), true));
 		change_name.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(change_name, false));
 		
-		mov.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(mov, true));
+		mov.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(mov, new DropShadow(), true));
 		mov.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(mov, false));
 		
-
-		fin_tour.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonFinDeTour(player, this, risk));
-		fin_tour.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(fin_tour, true));
+		fin_tour.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonFinDeTour(this, risk));
+		fin_tour.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(fin_tour, new DropShadow(), true));
 		fin_tour.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(fin_tour, false));
 		
-		renfort.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(renfort, true));
+		renfort.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(renfort, new DropShadow(), true));
 		renfort.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(renfort, false));
-		
-		detail.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(detail, true));
+
+		detail.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonDetailTerritoire(this, risk));
+		detail.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(detail, new DropShadow(), true));
 		detail.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(detail, false));
-		
-		process_mission.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(process_mission, true));
+
+		process_mission.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(process_mission, new DropShadow(), true));
 		process_mission.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(process_mission, false));
 		
 	}
@@ -136,6 +139,7 @@ public class TourView extends View{
 
 	public VBox get_pop_joueur() {
 		VBox vbox = new VBox();
+		Label vide = new Label();
 		vbox.setSpacing(10);
 		vbox.setPadding(new Insets(10,10,10,10));
 		HBox hbox = new HBox();
@@ -152,6 +156,18 @@ public class TourView extends View{
 		Label mission = new Label(player.get_mission().get_mission_contenu());
 		hbox.getChildren().addAll(name, mission, process_mission);
 		vbox.getChildren().add(hbox);
+		name = new Label("Territoires");
+		vbox.getChildren().add(name);
+		VBox vbox_territoire = new VBox();
+		vbox_territoire.setSpacing(5);
+		vbox_territoire.setPadding(new Insets(5,5,5,5));
+		for (int i=0; i<player.get_territoire().size(); i++) {
+			hbox = new HBox();
+			name = new Label(player.get_territoire().get(i).get_name());
+			Label renfort = new Label(player.get_territoire().get(i).get_armee_renfort()+"");
+			hbox.getChildren().addAll(name, renfort, vide);
+			vbox.getChildren().add(hbox);
+		}
 		return vbox;
 	}
 	

@@ -40,6 +40,12 @@ public class MissionDetruireXModel extends MissionModel{
 		}
 		return false;
 	}
+
+	@Override
+	public String get_mission_contenu() {
+		this.set_mission_contenu("Détruire le joueur [" + this.target_player.get_name() + "]");
+		return this.mission_contenu;
+	}
 	
 	
 }
