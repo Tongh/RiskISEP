@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import Controller.JoueurController;
 import Controller.MapController;
+import Controller.Unites.SoldatController;
 import View.TourView;
 import javafx.stage.Stage;
 
@@ -52,7 +53,7 @@ public class Risk {
 		new TerritoireDistribue(this.players, this.map, nombre_de_territoire_initial);
 		
 		// tous les joueurs recoit les armées 
-		this.armee_distribue();
+		this.armee_distribue(nombre_de_territoire_initial);
 		
 		/* show image et UI */
 		stage.close();
@@ -65,10 +66,13 @@ public class Risk {
 		this.main_jeu();
 	}
 	
-	private void armee_distribue() {
+	private void armee_distribue(int nb_terre) {
 		int renfort = 40 - (this.nombre_player - 2) * 5;
 		for (int i=0; i<this.players.length; i++) {
-			this.players[i].add_renfort(renfort);
+			this.players[i].add_renfort(renfort-nb_terre);
+			for (int ii=0; ii<nb_terre; ii++) {
+				this.players[i].get_territoire().get(ii).add_armee(new SoldatController());
+			}
 		}
 		
 	}
@@ -117,14 +121,7 @@ public class Risk {
 			}
 		}
 	}
-
-	private void player_mouvement(JoueurController player_actuelle) {
-		// si il y a battaille
-		
-		// mouvement à un territoire sans occupant
-		
-	}
-
+	
 	public JoueurController tour_de_qui(JoueurController player_actuelle) {
 		int index = 0;
 		for (int i=0; i<this.players_vivant.size(); i++) {

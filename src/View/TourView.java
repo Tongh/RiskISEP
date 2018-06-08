@@ -7,6 +7,7 @@ import Controller.JoueurController;
 import Controller.BoutonEvent.BoutonChangePlayerName;
 import Controller.BoutonEvent.BoutonDetailTerritoire;
 import Controller.BoutonEvent.BoutonFinDeTour;
+import Controller.BoutonEvent.BoutonGetRenfort;
 import Controller.BoutonEvent.BoutonShadowEvent;
 import Core.Risk;
 import Core.View;
@@ -43,6 +44,7 @@ public class TourView extends View{
 	private Button mov = new Button("Mouvement");
 	private Button change_name = new Button("Modifier");
 	private Button process_mission = new Button("Process");
+	private Button update_terre_detail = new Button("Update");
 	private JoueurController player;
 	private Label label_player_name;
 	private Risk risk; 
@@ -51,6 +53,7 @@ public class TourView extends View{
 		super(stage.getWidth(), stage.getHeight());
 		this.stage = stage;
 		this.risk = risk;
+		this.risk.get_player_actuelle().cal_renfort();
 		this.player = player;
 		this.updateView();
 	}
@@ -85,7 +88,8 @@ public class TourView extends View{
 		fin_tour.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonFinDeTour(this, risk));
 		fin_tour.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(fin_tour, new DropShadow(), true));
 		fin_tour.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(fin_tour, false));
-		
+
+		renfort.addEventHandler(MouseEvent.MOUSE_PRESSED, new BoutonGetRenfort(this, risk));
 		renfort.addEventHandler(MouseEvent.MOUSE_ENTERED, new BoutonShadowEvent(renfort, new DropShadow(), true));
 		renfort.addEventHandler(MouseEvent.MOUSE_EXITED, new BoutonShadowEvent(renfort, false));
 
@@ -142,6 +146,7 @@ public class TourView extends View{
 		Label vide = new Label();
 		vbox.setSpacing(10);
 		vbox.setPadding(new Insets(10,10,10,10));
+		
 		HBox hbox = new HBox();
 		hbox.setSpacing(10);
 		hbox.setPadding(new Insets(5, 5, 5, 5));
@@ -149,6 +154,15 @@ public class TourView extends View{
 		this.label_player_name = new Label(player.get_name());
 		hbox.getChildren().addAll(name, label_player_name, change_name);
 		vbox.getChildren().add(hbox);
+		
+		hbox = new HBox();
+		hbox.setSpacing(10);
+		hbox.setPadding(new Insets(5, 5, 5, 5));
+		name = new Label("Renfort :");
+		Label renfort_reste = new Label(player.get_renfort()+"");
+		hbox.getChildren().addAll(name, renfort_reste, vide);
+		vbox.getChildren().add(hbox);
+		
 		hbox = new HBox();
 		hbox.setSpacing(10);
 		hbox.setPadding(new Insets(5, 5, 5, 5));
@@ -156,18 +170,27 @@ public class TourView extends View{
 		Label mission = new Label(player.get_mission().get_mission_contenu());
 		hbox.getChildren().addAll(name, mission, process_mission);
 		vbox.getChildren().add(hbox);
+		
+		hbox = new HBox();
+		hbox.setSpacing(10);
+		hbox.setPadding(new Insets(5, 5, 5, 5));
 		name = new Label("Territoires");
-		vbox.getChildren().add(name);
+		hbox.getChildren().addAll(name, vide, update_terre_detail);
+		vbox.getChildren().add(hbox);
+		
 		VBox vbox_territoire = new VBox();
 		vbox_territoire.setSpacing(5);
 		vbox_territoire.setPadding(new Insets(5,5,5,5));
 		for (int i=0; i<player.get_territoire().size(); i++) {
 			hbox = new HBox();
+			hbox.setSpacing(10);
+			hbox.setPadding(new Insets(5, 5, 5, 5));
 			name = new Label(player.get_territoire().get(i).get_name());
 			Label renfort = new Label(player.get_territoire().get(i).get_armee_renfort()+"");
 			hbox.getChildren().addAll(name, renfort, vide);
 			vbox.getChildren().add(hbox);
 		}
+		
 		return vbox;
 	}
 	

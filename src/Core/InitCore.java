@@ -106,9 +106,6 @@ public class InitCore extends Application{
 			}
 		}
 		
-		TerritoireController territoire = map.get_territoire_by_name("la France");
-		TerritoireController territoire_venir = map.get_territoire_by_name("l'Italie");
-		
 		SoldatController soldat = new SoldatController();
 		CavalierController cavalier = new CavalierController();
 		CanonController canon = new CanonController();

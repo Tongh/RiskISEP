@@ -7,7 +7,7 @@ import Core.Model;
 public class UniteModel extends Model {
 
 	private Random rand = new Random();
-	protected int cout;
+	protected static int cout;
 	protected int priorite_att, priorite_def;
 	protected int mouvement;
 	protected int puissance_min, puissance_max;

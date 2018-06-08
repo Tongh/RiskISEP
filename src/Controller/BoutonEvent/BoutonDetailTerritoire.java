@@ -78,8 +78,8 @@ public class BoutonDetailTerritoire implements EventHandler<MouseEvent> {
 		alert.setHeaderText("Occupant joueur: " + terre.get_occupant().get_name());
 		if (terre.get_armees().size() != 0) {
 			String soldat = "soldat : " + terre.get_map_armee().get("soldat") + "\n";
-			String cavalier = "soldat : " + terre.get_map_armee().get("cavalier") + "\n";
-			String canon = "soldat : " + terre.get_map_armee().get("canon") + "\n";
+			String cavalier = "cavalier : " + terre.get_map_armee().get("cavalier") + "\n";
+			String canon = "canon : " + terre.get_map_armee().get("canon") + "\n";
 			alert.setContentText(soldat + cavalier + canon);
 		} else {
 			alert.setContentText("Ce territoire n'a pas d'armée!");
